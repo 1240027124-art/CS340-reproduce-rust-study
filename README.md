@@ -31,5 +31,22 @@ Our target is to reproduce RQ1 in Section 4 (Unsafe Usages) of the original pape
 3. Compare our measured statistics with the numbers reported in the original paper and analyze the discrepancies.
 4. Conduct a single-variable extension experiment: filter test files and count unsafe constructs only within production source code, while keeping all other experimental settings unchanged.
 
+## Build & Run Instructions
+1. Clone repository and pull submodules
+```bash
+git clone https://github.com/1240027124-art/CS340-reproduce-rust-study.git
+cd CS340-reproduce-rust-study
+git submodule update --init --recursive
+2. Install dependencies
+- Rust toolchain (rustc 1.99.1)
+- Python3 and related packages
+3. Run main reproduction experiment
+cd rust-study/section-4-unsafe-usages/unsafe-statisitcs/src_parser
+bash run_all.sh
+4. Run extension experiment
+5. Output
+Raw logs of each run will be saved in logs/.
+Result tables will be saved in results/.
+
 ## Notes
 This repository is for the CS340 paper replication assignment only.
