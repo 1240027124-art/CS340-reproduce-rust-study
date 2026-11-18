@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 *.info
 tmp/
 __pycache__/
 *.log
 .DS_Store
+=======
+# Ignore dataset and build outputs
+dataset/
+*.log
+__pycache__/
+target/
+*.csv
+*.zip
+*.tar.gz
+>>>>>>> origin/main
