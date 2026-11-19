@@ -31,6 +31,9 @@ Per the course requirements, here are the deviations from the original paper's s
 1. Reduced Scale: The original paper analyzed 5 large applications (e.g., Servo, TiKV) and 5 libraries. Due to time and hardware constraints, we performed the reproduction on a subset of these to verify the correctness of the parser.
 2. Environment: The original paper used a historical Rust toolchain. We used a modern rustc version because the source parser (src_parser) relies on textual/AST analysis rather than unstable internal MIR interfaces.
 3. Hardcoded Paths: We modified the original run_all.sh to use relative paths instead of the authors' absolute paths to ensure it runs on a clean machine.
+4. Dataset: Due to network download limitation on local machine, we initially adopt the pre‑packaged dataset shipped within original repository instead of downloading and compiling full target projects locally. Full compilation step will be supplemented on campus machine later.
+5. Experiment progress: Parts of full‑project compilation experiment are pending supplementary execution on campus hardware.
+
 
 ## 5. Repository Structure
 .
