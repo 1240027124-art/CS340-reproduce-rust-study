@@ -36,7 +36,7 @@ Per the course requirements, here are the deviations from the original paper's s
 
 
 ## 5. Repository Structure
-.
+
 ├── README.md
 ├── original-code/          # Submodule: The original rust-study repo
 ├── run_all.sh              # Script to run the main reproduction
