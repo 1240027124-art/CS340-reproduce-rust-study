@@ -44,3 +44,16 @@ This program has a use-after-free bug.
 It allocates memory on the heap, then releases it.
 The program still tries to write data to the freed memory, which is undefined behavior.
 Miri can detect this dangling pointer access.
+# UAF Test Case
+- Bug Type: Use-After-Free
+- File: uaf_demo.rs
+- Description: This unsafe Rust snippet constructs a use-after-free vulnerability.
+- Testing Command (for Section 7 detector):
+```bash
+./target/debug/uaf-detector uaf_demo.rs
+```
+- Expected Output:
+```
+Warning: found use-after-free bug at line 9, inside unsafe block
+```
+- Note: The uaf-detector static analyzer will be implemented in Section 7. It is not available in the repository for now.
