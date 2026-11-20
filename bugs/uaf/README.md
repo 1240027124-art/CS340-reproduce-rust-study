@@ -15,6 +15,7 @@ fn main() {
 
 ```
 ## Miri Detection Result
+![Miri UAF error log](miri_output.png)
 ```
 error: Undefined Behavior: memory access failed: alloc288 has been freed, so this pointer is dangling
  --> src/main.rs:6:9
