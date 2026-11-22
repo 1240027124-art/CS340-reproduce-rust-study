@@ -1,16 +1,24 @@
-<<<<<<< HEAD
-*.info
-tmp/
-__pycache__/
-*.log
-.DS_Store
-=======
-# Ignore dataset and build outputs
-dataset/
-*.log
-__pycache__/
+
+# Rust build outputs
 target/
+**/target/
+
+# Dataset and generated files
+dataset/
+*.info
 *.csv
 *.zip
 *.tar.gz
->>>>>>> origin/main
+
+# Temporary files
+tmp/
+*.tmp
+*.log
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+.venv/
+
+# OS-generated files
+.DS_Store
