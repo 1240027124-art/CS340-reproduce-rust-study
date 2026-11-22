@@ -104,7 +104,7 @@ function count_dir_fast() {
 
     for i in "${array[@]}"; do
         #echo $i
-        count_one_file "$i"
+        count_one_file_fast "$i"
     done
     #echo "# and LOC of unsafe block:"
     unsafe_regions=$(./sum.py unsafe_block.info)
