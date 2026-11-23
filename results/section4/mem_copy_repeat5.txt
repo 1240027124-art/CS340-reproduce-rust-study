@@ -1,0 +1,20 @@
+Section 4 - Reasons of Usage
+Experiment: Memory Copy
+Toolchain: nightly-2019-07-03
+
+Run,Safe(ns/iter),Unsafe(ns/iter)
+1,1574,1308
+2,1863,1209
+3,1868,1362
+4,1892,1349
+5,1880,1335
+
+Average Safe: 1815.4 ns/iter
+Average Unsafe: 1312.6 ns/iter
+
+Observed average time reduction: 27.70%
+Observed speed ratio: 1.38x
+
+Note:
+Five repeated cargo bench invocations.
+All runs completed successfully.

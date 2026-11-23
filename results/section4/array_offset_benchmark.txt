@@ -1,0 +1,22 @@
+Section 4 - Reasons of Usage
+Experiment: Array Offset
+
+Toolchain:
+nightly-2019-07-03
+rustc 1.37.0-nightly
+
+Safe (bench_array):
+189940 ns/iter (+/- 12980)
+
+Unsafe (bench_offset):
+26673 ns/iter (+/- 3630)
+
+Observed time reduction:
+85.96%
+
+Observed speed ratio:
+Approximately 7.12x
+
+Status: Benchmark completed successfully.
+Note: Single recorded run; repeated measurements are needed.
+Original source contains an unnecessary unsafe block in bench_array.

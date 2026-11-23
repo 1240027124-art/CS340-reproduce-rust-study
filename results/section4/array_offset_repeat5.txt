@@ -1,0 +1,20 @@
+Section 4 - Reasons of Usage
+Experiment: Array Offset
+Toolchain: nightly-2019-07-03
+
+Run,Safe(ns/iter),Unsafe(ns/iter)
+1,191725,27409
+2,185905,27334
+3,186179,27201
+4,187593,27400
+5,190637,27539
+
+Average Safe: 188407.8 ns/iter
+Average Unsafe: 27376.6 ns/iter
+
+Observed average time reduction: 85.47%
+Observed speed ratio: 6.88x
+
+Note:
+Five repeated cargo bench invocations.
+All runs completed successfully.

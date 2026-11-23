@@ -70,7 +70,7 @@ function count_one_file_fast() {
 }
 
 function count_dir() {
-    rm tmp unsafe_block.info unsafe_fn.info unsafe_fn_LOC.info unsafe_trait.info
+    rm -f tmp unsafe_block.info unsafe_fn.info unsafe_fn_LOC.info unsafe_trait.info
     input_dir="$1"
     array=()
     while IFS=  read -r -d $'\0'; do
@@ -95,7 +95,7 @@ function count_dir() {
 }
 
 function count_dir_fast() {
-    rm tmp unsafe_block.info unsafe_fn.info unsafe_trait.info
+    rm -f tmp unsafe_block.info unsafe_fn.info unsafe_trait.info
     input_dir="$1"
     array=()
     while IFS=  read -r -d $'\0'; do
@@ -142,7 +142,7 @@ function parse_liballoc() {
 
 function count_std() {
    g_reset
-   echo "unsafe region num, unsafe fn num, unsafe trait num:"
+   echo "unsafe fn num, unsafe region num, unsafe trait num:"
    reset
    echo "libstd"
    parse_libstd
@@ -152,6 +152,7 @@ function count_std() {
    reset
    echo "liballoc"
    parse_liballoc
+   reset
    echo "total std"
    echo ${g_unsafe_fn_num} ${g_unsafe_region_num} ${g_unsafe_trait_num}
 }

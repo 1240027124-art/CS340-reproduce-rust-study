@@ -1,0 +1,18 @@
+Section 4 - Reasons of Usage
+Experiment: Memory Copy
+
+Toolchain:
+nightly-2019-07-03
+rustc 1.37.0-nightly
+
+Safe:
+1590 ns/iter (+/- 80)
+
+Unsafe:
+1343 ns/iter (+/- 96)
+
+Observed time reduction:
+15.5%
+
+Status: Benchmark completed successfully.
+Note: Single recorded run; repeated measurements are needed.

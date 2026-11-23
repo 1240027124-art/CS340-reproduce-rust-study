@@ -1,0 +1,15 @@
+Section 4 - Unsafe Statistics
+Dataset: Rust
+Commit: 2975a3c4befa8ad610da2e3c5f5de351d6d70a2b
+
+Metric order:
+Unsafe Functions, Unsafe Regions, Unsafe Traits
+
+libstd: 620 965 2
+libcore: 162 283 9
+liballoc: 70 333 1
+Total: 852 1581 12
+
+Validation:
+All three module results match the previous run.
+The corrected total includes libstd, libcore and liballoc.

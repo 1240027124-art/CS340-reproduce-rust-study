@@ -1,0 +1,21 @@
+Section 4 - Reasons of Usage
+Experiment: Array Access
+
+Toolchain:
+nightly-2019-07-03
+rustc 1.37.0-nightly
+
+Safe (boundary_checked):
+194971 ns/iter (+/- 27816)
+
+Unsafe (boundary_unchecked):
+27763 ns/iter (+/- 2499)
+
+Observed time reduction:
+85.76%
+
+Observed speed ratio:
+Approximately 7.02x
+
+Status: Benchmark completed successfully.
+Note: Single recorded run; repeated measurements are needed.

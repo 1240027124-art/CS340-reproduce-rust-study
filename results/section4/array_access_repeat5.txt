@@ -1,0 +1,57 @@
+Section 4 - Reasons of Usage
+Experiment: Array Access
+Toolchain: nightly-2019-07-03
+
+Run,Safe(ns/iter),Unsafe(ns/iter)
+1,188480,27475
+2,193867,27493
+3,184673,27971
+4,197225,27998
+5,193380,27945
+
+Average Safe: 191525 ns/iter
+Average Unsafe: 27776.4 ns/iter
+
+Observed average time reduction: 85.50%
+Observed speed ratio: 6.90x
+
+Note:
+Five repeated cargo bench invocations.
+All runs completed successfully.
+</EOF>
+
+echo "===== Saved Array Access results ====="
+cat results/section4/array_access_repeat5.txt
+
+
+cd "$HOME/projects/CS340-reproduce-rust-study/original-code/section-4-unsafe-usages/section-4-1-reasons-of-usage/array-offset"
+
+for i in {1..5}; do
+    echo "========== Run $i =========="
+    cargo +nightly-2019-07-03 bench
+done
+
+
+cd "$HOME/projects/CS340-reproduce-rust-study"
+
+cat > results/section4/array_access_repeat5.txt <<'EOF'
+Section 4 - Reasons of Usage
+Experiment: Array Access
+Toolchain: nightly-2019-07-03
+
+Run,Safe(ns/iter),Unsafe(ns/iter)
+1,188480,27475
+2,193867,27493
+3,184673,27971
+4,197225,27998
+5,193380,27945
+
+Average Safe: 191525 ns/iter
+Average Unsafe: 27776.4 ns/iter
+
+Observed average time reduction: 85.50%
+Observed speed ratio: 6.90x
+
+Note:
+Five repeated cargo bench invocations.
+All runs completed successfully.
