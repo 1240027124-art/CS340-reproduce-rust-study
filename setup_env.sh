@@ -3,6 +3,12 @@ set -e
 
 NIGHTLY_VERSION="nightly-2026-11-19"
 
+if ! command -v sudo &> /dev/null
+then
+    apt update
+    apt install -y sudo
+fi
+
 echo "===== Install system dependencies ====="
 sudo apt update
 sudo apt install -y build-essential curl git python3 python3-pip python3-dev
