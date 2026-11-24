@@ -21,7 +21,7 @@ else
     echo "rustup already installed."
 fi
 
-rustup toolchain install ${NIGHTLY_VERSION} --component miri
+rustup toolchain install $NIGHTLY_VERSION --component miri --component rust-src
 
 echo "===== Verify installation ====="
 cargo +${NIGHTLY_VERSION} miri --version
