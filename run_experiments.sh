@@ -2,6 +2,9 @@
 set -e
 
 NIGHTLY_VERSION="nightly-2026-11-19"
+if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi
 
 echo "=================================================="
 echo " Starting CS340 Rust UAF Reproduction (Miri)      "
