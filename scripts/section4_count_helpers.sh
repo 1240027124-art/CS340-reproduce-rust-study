@@ -45,74 +45,142 @@ function reset() {
     total_LOC=0
 }
 
+# grep status 1 means no matches, not an execution error.
+function section4_safe_grep() {
+    local status=0
+    grep "$@" || status=$?
+    if [ "$status" -eq 1 ]; then
+        return 0
+    fi
+    return "$status"
+}
+
 function count_one_file() {
+    local -
+    set -o pipefail
     comment_remover="comment_remover/comment_remover_linux"
     unsafe_block_extractor="unsafe_block_extractor/unsafe_block_extractor.py"
     unsafe_fn_extractor="unsafe_fn_extractor/unsafe_fn_extractor.py"
 
-    $comment_remover $1 > tmp
-    $unsafe_block_extractor tmp >> unsafe_block.info
-    $unsafe_fn_extractor tmp >> unsafe_fn_LOC.info
-    egrep 'unsafe (\w )*fn .+\(' tmp | grep -v ';$' >> unsafe_fn.info
-    grep 'unsafe trait .*{' tmp >> unsafe_trait.info
-    let total_LOC+=$(cat tmp | grep -v '^$' | wc -l | cut -d' ' -f1)
+    "$comment_remover" "$1" > tmp || return 1
+    "$unsafe_block_extractor" tmp >> unsafe_block.info || return 1
+    "$unsafe_fn_extractor" tmp >> unsafe_fn_LOC.info || return 1
+    section4_safe_grep -E 'unsafe (\w )*fn .+\(' tmp | section4_safe_grep -v ';$' >> unsafe_fn.info || return 1
+    section4_safe_grep 'unsafe trait .*{' tmp >> unsafe_trait.info || return 1
+    local file_loc
+    file_loc=$(section4_safe_grep -v '^$' tmp | wc -l) || return 1
+    total_LOC=$((total_LOC + file_loc))
+    return 0
 }
 
 function count_one_file_fast() {
+    local -
+    set -o pipefail
     comment_remover="comment_remover/comment_remover_linux"
     unsafe_block_extractor="unsafe_block_extractor/unsafe_block_extractor.py"
     unsafe_fn_extractor="unsafe_fn_extractor/unsafe_fn_extractor.py"
 
-    $comment_remover $1 > tmp
-    $unsafe_block_extractor tmp >> unsafe_block.info
-    egrep 'unsafe (\w )*fn .+\(' tmp | grep -v ';$' >> unsafe_fn.info
-    grep 'unsafe trait .*{' tmp >> unsafe_trait.info
+    "$comment_remover" "$1" > tmp || return 1
+    "$unsafe_block_extractor" tmp >> unsafe_block.info || return 1
+    section4_safe_grep -E 'unsafe (\w )*fn .+\(' tmp | section4_safe_grep -v ';$' >> unsafe_fn.info || return 1
+    section4_safe_grep 'unsafe trait .*{' tmp >> unsafe_trait.info || return 1
+    return 0
 }
 
 function count_dir() {
-    rm -f tmp unsafe_block.info unsafe_fn.info unsafe_fn_LOC.info unsafe_trait.info
-    input_dir="$1"
-    array=()
-    while IFS=  read -r -d $'\0'; do
-        array+=("$REPLY")
-    done < <(find "${input_dir}" -type f -name "*.rs" -print0)
+    local -
+    set -o pipefail
+    rm -f tmp unsafe_block.info unsafe_fn.info unsafe_fn_LOC.info unsafe_trait.info || return 1
+    local input_dir="$1"
+    local file_list
+    local i
+    local -a array=()
+
+    if [ ! -d "$input_dir" ]; then
+        echo "[ERROR] Directory not found: $input_dir" >&2
+        return 1
+    fi
+
+    file_list=$(mktemp) || return 1
+
+    if ! find "$input_dir" -type f -name "*.rs" -print0 > "$file_list"; then
+        rm -f "$file_list" || return 1
+        return 1
+    fi
+
+    mapfile -d '' -t array < "$file_list"
+    rm -f "$file_list" || return 1
+
+    if [ "${#array[@]}" -eq 0 ]; then
+        echo "[ERROR] No Rust files: $input_dir" >&2
+        return 1
+    fi
 
     for i in "${array[@]}"; do
         #echo $i
-        count_one_file "$i"
+        count_one_file "$i" || {
+            echo "[ERROR] Failed to count: $i" >&2
+            return 1
+        }
     done
     #echo "# and LOC of unsafe block:"
-    unsafe_regions=$(./sum.py unsafe_block.info)
-    unsafe_region_num=$(echo $unsafe_regions | cut -d' ' -f1)
-    unsafe_region_LOC=$(echo $unsafe_regions | cut -d' ' -f2)
+    unsafe_regions=$(./sum.py unsafe_block.info) || return 1
+    unsafe_region_num=$(echo $unsafe_regions | cut -d' ' -f1) || return 1
+    unsafe_region_LOC=$(echo $unsafe_regions | cut -d' ' -f2) || return 1
     #echo "# and LOC of unsafe fn:"
-    unsafe_fn_num=$(wc -l unsafe_fn.info | cut -d' ' -f1)
-    unsafe_fn_LOC=$(./sum.py unsafe_fn_LOC.info | cut -d' ' -f2)
+    unsafe_fn_num=$(wc -l unsafe_fn.info | cut -d' ' -f1) || return 1
+    unsafe_fn_LOC=$(./sum.py unsafe_fn_LOC.info | cut -d' ' -f2) || return 1
     let unsafe_fn_LOC+=unsafe_fn_num
     let unsafe_total_LOC=unsafe_region_LOC+unsafe_fn_LOC
     #echo "# of unsafe trait:"
-    unsafe_trait_num=$(wc -l unsafe_trait.info | cut -d' ' -f1)
+    unsafe_trait_num=$(wc -l unsafe_trait.info | cut -d' ' -f1) || return 1
+    return 0
 }
 
 function count_dir_fast() {
-    rm -f tmp unsafe_block.info unsafe_fn.info unsafe_trait.info
-    input_dir="$1"
-    array=()
-    while IFS=  read -r -d $'\0'; do
-        array+=("$REPLY")
-    done < <(find "${input_dir}" -type f -name "*.rs" -print0)
+    local -
+    set -o pipefail
+    rm -f tmp unsafe_block.info unsafe_fn.info unsafe_trait.info || return 1
+    local input_dir="$1"
+    local file_list
+    local i
+    local -a array=()
+
+    if [ ! -d "$input_dir" ]; then
+        echo "[ERROR] Directory not found: $input_dir" >&2
+        return 1
+    fi
+
+    file_list=$(mktemp) || return 1
+
+    if ! find "$input_dir" -type f -name "*.rs" -print0 > "$file_list"; then
+        rm -f "$file_list" || return 1
+        return 1
+    fi
+
+    mapfile -d '' -t array < "$file_list"
+    rm -f "$file_list" || return 1
+
+    if [ "${#array[@]}" -eq 0 ]; then
+        echo "[ERROR] No Rust files: $input_dir" >&2
+        return 1
+    fi
 
     for i in "${array[@]}"; do
         #echo $i
-        count_one_file_fast "$i"
+        count_one_file_fast "$i" || {
+            echo "[ERROR] Failed to count: $i" >&2
+            return 1
+        }
     done
     #echo "# and LOC of unsafe block:"
-    unsafe_regions=$(./sum.py unsafe_block.info)
-    unsafe_region_num=$(echo $unsafe_regions | cut -d' ' -f1)
+    unsafe_regions=$(./sum.py unsafe_block.info) || return 1
+    unsafe_region_num=$(echo $unsafe_regions | cut -d' ' -f1) || return 1
     #echo "# and LOC of unsafe fn:"
-    unsafe_fn_num=$(wc -l unsafe_fn.info | cut -d' ' -f1)
+    unsafe_fn_num=$(wc -l unsafe_fn.info | cut -d' ' -f1) || return 1
     #echo "# of unsafe trait:"
-    unsafe_trait_num=$(wc -l unsafe_trait.info | cut -d' ' -f1)
+    unsafe_trait_num=$(wc -l unsafe_trait.info | cut -d' ' -f1) || return 1
+    return 0
 }
 
 function parse_libstd() {

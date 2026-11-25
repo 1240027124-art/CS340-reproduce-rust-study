@@ -1,0 +1,4 @@
+Project,Rust_Files,Runs_Per_Method,Original_Mean_Seconds,Original_SD_Seconds,Fast_Mean_Seconds,Fast_SD_Seconds,Speedup,Time_Reduction_Percent,Counts_Match
+rand,103,3,3.142000,0.014177,1.658000,0.010392,1.8951,47.2311,PASS
+rayon,167,3,5.147333,0.029872,2.799667,0.087945,1.8386,45.6094,PASS
+servo,1042,3,33.005333,0.754841,17.368333,0.108187,1.9003,47.3772,PASS
