@@ -1,0 +1,10 @@
+Project,Rust_Files,Unsafe_Functions,Unsafe_Regions,Unsafe_Traits,Elapsed_Seconds
+rand,103,0,49,0,1.629
+crossbeam,104,56,219,0,1.755
+rust-threadpool,1,0,0,0,0.035
+rayon,167,49,81,1,2.830
+lazy-static.rs,10,1,2,0,0.194
+servo,1042,528,1147,12,17.634
+tikv,399,11,85,0,6.417
+parity-ethereum,752,4,43,0,12.656
+tock,318,175,366,3,5.509

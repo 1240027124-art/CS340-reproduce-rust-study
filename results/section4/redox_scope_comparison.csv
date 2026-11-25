@@ -1,0 +1,4 @@
+Project,Rust_Files,Unsafe_Functions,Unsafe_Regions,Unsafe_Traits,Elapsed_Seconds
+redox-full,14018,4343,4225,28,271.973
+redox-rust,13506,4021,3510,27,263.073
+redox-excluding-rust,512,322,715,1,
