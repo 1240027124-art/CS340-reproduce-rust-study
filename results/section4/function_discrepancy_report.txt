@@ -1,0 +1,396 @@
+SECTION 4 - UNSAFE FUNCTION DISCREPANCY REPORT
+===========================================================================
+
+MODULE: collections
+---------------------------------------------------------------------------
+
+MODULE LEXER TOTAL: 10
+MODULE GREP TOTAL: 10
+MODULE DIFFERENCE: 0
+
+MODULE: io
+---------------------------------------------------------------------------
+
+MODULE LEXER TOTAL: 16
+MODULE GREP TOTAL: 16
+MODULE DIFFERENCE: 0
+
+MODULE: net
+---------------------------------------------------------------------------
+
+MODULE LEXER TOTAL: 2
+MODULE GREP TOTAL: 2
+MODULE DIFFERENCE: 0
+
+MODULE: os
+---------------------------------------------------------------------------
+
+MODULE LEXER TOTAL: 0
+MODULE GREP TOTAL: 0
+MODULE DIFFERENCE: 0
+
+MODULE: sync
+---------------------------------------------------------------------------
+
+MODULE LEXER TOTAL: 13
+MODULE GREP TOTAL: 13
+MODULE DIFFERENCE: 0
+
+MODULE: sys
+---------------------------------------------------------------------------
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/redox/ext/process.rs
+Lexer: 2
+Original grep: 3
+
+[GREP_ONLY] Line 57
+Preliminary classification: NEEDS_MANUAL_REVIEW
+Source:     unsafe fn pre_exec<F>(&mut self, f: F) -> &mut process::Command
+Context:
+   55:
+   56:     #[stable(feature = "process_pre_exec", since = "1.34.0")]
+   57:     unsafe fn pre_exec<F>(&mut self, f: F) -> &mut process::Command
+   58:         where F: FnMut() -> io::Result<()> + Send + Sync + 'static;
+   59:
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/redox/fast_thread_local.rs
+Lexer: 4
+Original grep: 2
+
+[LEXER_ONLY] Line 71
+Preliminary classification: EXTERN_FUNCTION
+Source:     unsafe extern fn run_dtors(mut ptr: *mut u8) {
+Context:
+   69:     list.push((t, dtor));
+   70:
+   71:     unsafe extern fn run_dtors(mut ptr: *mut u8) {
+   72:         while !ptr.is_null() {
+   73:             let list: Box<List> = Box::from_raw(ptr as *mut List);
+
+[LEXER_ONLY] Line 83
+Preliminary classification: EXTERN_FUNCTION
+Source: pub unsafe extern fn destroy_value<T>(ptr: *mut u8) {
+Context:
+   81: }
+   82:
+   83: pub unsafe extern fn destroy_value<T>(ptr: *mut u8) {
+   84:     let ptr = ptr as *mut Key<T>;
+   85:
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/sgx/abi/mod.rs
+Lexer: 1
+Original grep: 0
+
+[LEXER_ONLY] Line 22
+Preliminary classification: EXTERN_ABI
+Source: unsafe extern "C" fn tcs_init(secondary: bool) {
+Context:
+   20: #[cfg(not(test))]
+   21: #[no_mangle]
+   22: unsafe extern "C" fn tcs_init(secondary: bool) {
+   23:
+   24:
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/sgx/abi/usercalls/raw.rs
+Lexer: 1
+Original grep: 6
+
+[GREP_ONLY] Line 175
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         pub unsafe fn $f($n1: $t1, $n2: $t2, $n3: $t3, $n4: $t4) -> $r {
+Context:
+  173:         #[unstable(feature = "sgx_platform", issue = "56975")]
+  174:         #[inline(always)]
+  175:         pub unsafe fn $f($n1: $t1, $n2: $t2, $n3: $t3, $n4: $t4) -> $r {
+  176:             ReturnValue::from_registers(stringify!($f), do_usercall(
+  177:                 rtunwrap!(Some, NonZeroU64::new(Usercalls::$f as Register)),
+
+[GREP_ONLY] Line 191
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         pub unsafe fn $f($n1: $t1, $n2: $t2, $n3: $t3) -> $r {
+Context:
+  189:         #[unstable(feature = "sgx_platform", issue = "56975")]
+  190:         #[inline(always)]
+  191:         pub unsafe fn $f($n1: $t1, $n2: $t2, $n3: $t3) -> $r {
+  192:             ReturnValue::from_registers(stringify!($f), do_usercall(
+  193:                 rtunwrap!(Some, NonZeroU64::new(Usercalls::$f as Register)),
+
+[GREP_ONLY] Line 207
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         pub unsafe fn $f($n1: $t1, $n2: $t2) -> $r {
+Context:
+  205:         #[unstable(feature = "sgx_platform", issue = "56975")]
+  206:         #[inline(always)]
+  207:         pub unsafe fn $f($n1: $t1, $n2: $t2) -> $r {
+  208:             ReturnValue::from_registers(stringify!($f), do_usercall(
+  209:                 rtunwrap!(Some, NonZeroU64::new(Usercalls::$f as Register)),
+
+[GREP_ONLY] Line 222
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         pub unsafe fn $f($n1: $t1) -> $r {
+Context:
+  220:         #[unstable(feature = "sgx_platform", issue = "56975")]
+  221:         #[inline(always)]
+  222:         pub unsafe fn $f($n1: $t1) -> $r {
+  223:             ReturnValue::from_registers(stringify!($f), do_usercall(
+  224:                 rtunwrap!(Some, NonZeroU64::new(Usercalls::$f as Register)),
+
+[GREP_ONLY] Line 236
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         pub unsafe fn $f() -> $r {
+Context:
+  234:         #[unstable(feature = "sgx_platform", issue = "56975")]
+  235:         #[inline(always)]
+  236:         pub unsafe fn $f() -> $r {
+  237:             ReturnValue::from_registers(stringify!($f), do_usercall(
+  238:                 rtunwrap!(Some, NonZeroU64::new(Usercalls::$f as Register)),
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/sgx/alloc.rs
+Lexer: 6
+Original grep: 4
+
+[LEXER_ONLY] Line 38
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_c_alloc(size: usize, align: usize) -> *mut u8 {
+Context:
+   36: #[cfg(not(test))]
+   37: #[no_mangle]
+   38: pub unsafe extern "C" fn __rust_c_alloc(size: usize, align: usize) -> *mut u8 {
+   39:     crate::alloc::alloc(Layout::from_size_align_unchecked(size, align))
+   40: }
+
+[LEXER_ONLY] Line 44
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_c_dealloc(ptr: *mut u8, size: usize, align: usize) {
+Context:
+   42: #[cfg(not(test))]
+   43: #[no_mangle]
+   44: pub unsafe extern "C" fn __rust_c_dealloc(ptr: *mut u8, size: usize, align: usize) {
+   45:     crate::alloc::dealloc(ptr, Layout::from_size_align_unchecked(size, align))
+   46: }
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/sgx/mod.rs
+Lexer: 3
+Original grep: 2
+
+[LEXER_ONLY] Line 138
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_abort() {
+Context:
+  136: #[no_mangle]
+  137:
+  138: pub unsafe extern "C" fn __rust_abort() {
+  139:     abort_internal();
+  140: }
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/sgx/rwlock.rs
+Lexer: 15
+Original grep: 12
+
+[LEXER_ONLY] Line 169
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_rwlock_rdlock(p: *mut RWLock) -> i32 {
+Context:
+  167: #[cfg(not(test))]
+  168: #[no_mangle]
+  169: pub unsafe extern "C" fn __rust_rwlock_rdlock(p: *mut RWLock) -> i32 {
+  170:     if p.is_null() {
+  171:         return EINVAL;
+
+[LEXER_ONLY] Line 179
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_rwlock_wrlock(p: *mut RWLock) -> i32 {
+Context:
+  177: #[cfg(not(test))]
+  178: #[no_mangle]
+  179: pub unsafe extern "C" fn __rust_rwlock_wrlock(p: *mut RWLock) -> i32 {
+  180:     if p.is_null() {
+  181:         return EINVAL;
+
+[LEXER_ONLY] Line 188
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_rwlock_unlock(p: *mut RWLock) -> i32 {
+Context:
+  186: #[cfg(not(test))]
+  187: #[no_mangle]
+  188: pub unsafe extern "C" fn __rust_rwlock_unlock(p: *mut RWLock) -> i32 {
+  189:     if p.is_null() {
+  190:         return EINVAL;
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/sgx/stdio.rs
+Lexer: 1
+Original grep: 0
+
+[LEXER_ONLY] Line 74
+Preliminary classification: EXTERN_ABI
+Source: pub unsafe extern "C" fn __rust_print_err(m: *mut u8, s: i32) {
+Context:
+   72: #[cfg(not(test))]
+   73: #[no_mangle]
+   74: pub unsafe extern "C" fn __rust_print_err(m: *mut u8, s: i32) {
+   75:     if s < 0 {
+   76:         return;
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/unix/ext/process.rs
+Lexer: 2
+Original grep: 3
+
+[GREP_ONLY] Line 57
+Preliminary classification: NEEDS_MANUAL_REVIEW
+Source:     unsafe fn pre_exec<F>(&mut self, f: F) -> &mut process::Command
+Context:
+   55:
+   56:     #[stable(feature = "process_pre_exec", since = "1.34.0")]
+   57:     unsafe fn pre_exec<F>(&mut self, f: F) -> &mut process::Command
+   58:         where F: FnMut() -> io::Result<()> + Send + Sync + 'static;
+   59:
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/unix/fast_thread_local.rs
+Lexer: 3
+Original grep: 2
+
+[LEXER_ONLY] Line 74
+Preliminary classification: EXTERN_FUNCTION
+Source:     unsafe extern fn run_dtors(_: *mut u8) {
+Context:
+   72:     list.push((t, dtor));
+   73:
+   74:     unsafe extern fn run_dtors(_: *mut u8) {
+   75:         let mut ptr = DTORS.replace(ptr::null_mut());
+   76:         while !ptr.is_null() {
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/unix/stack_overflow.rs
+Lexer: 15
+Original grep: 14
+
+[LEXER_ONLY] Line 86
+Preliminary classification: EXTERN_FUNCTION
+Source:     unsafe extern fn signal_handler(signum: libc::c_int,
+Context:
+   84:
+   85:
+   86:     unsafe extern fn signal_handler(signum: libc::c_int,
+   87:                                     info: *mut libc::siginfo_t,
+   88:                                     _data: *mut libc::c_void) {
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/unix/weak.rs
+Lexer: 1
+Original grep: 3
+
+[GREP_ONLY] Line 71
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         unsafe fn $name($($arg_name: $t),*) -> $ret {
+Context:
+   69: macro_rules! syscall {
+   70:     (fn $name:ident($($arg_name:ident: $t:ty),*) -> $ret:ty) => (
+   71:         unsafe fn $name($($arg_name: $t),*) -> $ret {
+   72:             use super::os;
+   73:
+
+[GREP_ONLY] Line 89
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         unsafe fn $name($($arg_name:$t),*) -> $ret {
+Context:
+   87: macro_rules! syscall {
+   88:     (fn $name:ident($($arg_name:ident: $t:ty),*) -> $ret:ty) => (
+   89:         unsafe fn $name($($arg_name:$t),*) -> $ret {
+   90:
+   91:
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/windows/compat.rs
+Lexer: 0
+Original grep: 1
+
+[GREP_ONLY] Line 46
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:         pub unsafe fn $symbol($($argname: $argtype),*) -> $rettype {
+Context:
+   44:     )*) => ($(
+   45:         #[allow(unused_variables)]
+   46:         pub unsafe fn $symbol($($argname: $argtype),*) -> $rettype {
+   47:             use crate::sync::atomic::{AtomicUsize, Ordering};
+   48:             use crate::mem;
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/windows/fs.rs
+Lexer: 1
+Original grep: 0
+
+[LEXER_ONLY] Line 729
+Preliminary classification: EXTERN_ABI
+Source:     unsafe extern "system" fn callback(
+Context:
+  727:
+  728: pub fn copy(from: &Path, to: &Path) -> io::Result<u64> {
+  729:     unsafe extern "system" fn callback(
+  730:         _TotalFileSize: c::LARGE_INTEGER,
+  731:         _TotalBytesTransferred: c::LARGE_INTEGER,
+
+FILE: projects/rust-2019-study/rust/src/libstd/sys/windows/thread_local.rs
+Lexer: 9
+Original grep: 8
+
+[LEXER_ONLY] Line 201
+Preliminary classification: EXTERN_ABI
+Source: unsafe extern "system" fn on_tls_callback(h: c::LPVOID,
+Context:
+  199:
+  200: #[allow(dead_code, unused_variables)]
+  201: unsafe extern "system" fn on_tls_callback(h: c::LPVOID,
+  202:                                           dwReason: c::DWORD,
+  203:                                           pv: c::LPVOID) {
+
+MODULE LEXER TOTAL: 527
+MODULE GREP TOTAL: 523
+MODULE DIFFERENCE: 4
+
+MODULE: thread
+---------------------------------------------------------------------------
+
+FILE: projects/rust-2019-study/rust/src/libstd/thread/local.rs
+Lexer: 8
+Original grep: 7
+
+[LEXER_ONLY] Line 392
+Preliminary classification: EXTERN_FUNCTION
+Source:     unsafe extern fn destroy_value<T>(ptr: *mut u8) {
+Context:
+  390:     }
+  391:
+  392:     unsafe extern fn destroy_value<T>(ptr: *mut u8) {
+  393:         let ptr = ptr as *mut Key<T>;
+  394:
+
+[LEXER_ONLY] Line 468
+Preliminary classification: EXTERN_FUNCTION
+Source:     unsafe extern fn destroy_value<T: 'static>(ptr: *mut u8) {
+Context:
+  466:     }
+  467:
+  468:     unsafe extern fn destroy_value<T: 'static>(ptr: *mut u8) {
+  469:
+  470:
+
+[GREP_ONLY] Line 162
+Preliminary classification: POSSIBLE_MACRO_TEMPLATE
+Source:             unsafe fn __getit() -> $crate::option::Option<
+Context:
+  160:             fn __init() -> $t { $init }
+  161:
+  162:             unsafe fn __getit() -> $crate::option::Option<
+  163:                 &'static $crate::cell::UnsafeCell<
+  164:                     $crate::option::Option<$t>>>
+
+MODULE LEXER TOTAL: 9
+MODULE GREP TOTAL: 8
+MODULE DIFFERENCE: 1
+
+===========================================================================
+FINAL SUMMARY
+===========================================================================
+Lexer total: 577
+Original grep total: 572
+Difference: 5
+Lexer-only detections: 16
+Grep-only detections: 11
+
+Scope: All seven Rust standard library modules.

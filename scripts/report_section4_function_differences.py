@@ -17,7 +17,15 @@ REMOVER = ROOT / "comment_remover/comment_remover_linux"
 
 OUTPUT = ROOT / "results/section4/function_discrepancy_report.txt"
 
-MODULES = ("sys", "thread")
+MODULES = (
+    "collections",
+    "io",
+    "net",
+    "os",
+    "sync",
+    "sys",
+    "thread",
+)
 
 PATTERN = re.compile(r'unsafe (\w )*fn .+\(')
 
@@ -165,7 +173,7 @@ def main():
         f"Lexer-only detections: {total_lexer_only}",
         f"Grep-only detections: {total_grep_only}",
         "",
-        "Note: Classifications are preliminary and require manual review.",
+        "Scope: All seven Rust standard library modules.",
     ])
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
