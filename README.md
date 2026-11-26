@@ -10,6 +10,7 @@ This repository contains the artifact and reproduction scripts for the PLDI 2020
 **Our Group's Reproduction Goal:**
 1. **Section 4 (Unsafe Statistics):** Reproduce the statistics of `unsafe` code usage in real-world Rust projects to understand the scale of safety bypass.
 2. **Section 7 (UAF Detector):** Run the static Use-After-Free (UAF) detector provided by the authors to validate its effectiveness on real OS projects (e.g., Redox, Tock).
+3. **Extension:** Build a custom multi-threaded demo to test Miri's capability in detecting Data Races (concurrency bugs)."
 
 ## 2. Environment Setup
 To ensure reproducibility, we provide a setup script to configure the environment.
@@ -80,10 +81,11 @@ To adapt the 2020 PLDI paper's artifact to modern environments, we made the foll
 | **Rust Version** | Rust v1.39.0 (Year 2019) | Stable 1.100.0 / Nightly 2026-11-19 | Required to run modern Rust code and support the latest Miri features. |
 | **UAF Detection Tool** | Original static detector built by authors | **Miri** (Dynamic interpreter) | The original static detector had strict dependencies on old compiler versions. We used Miri as an alternative to demonstrate UAF detection effectively. |
 | **Project Scale** | 5 OS/Applications, 5 libraries | Reduced scale (e.g., Redox, Tock) | Reduced scale due to time constraints for the assignment presentation. |
+| **Experiment Scope** | Focused only on UAF detection (Section 7.1) | Added an extension for Data Race detection | To explore dynamic tools' effectiveness in OS concurrency scenarios beyond the paper's original scope. |
 
 ## 6. Group Contributions
 
-- **[Zhang Airan] [1240034584]**: Project management, README documentation, environment setup, and Part B (Miri UAF demo execution).
+- **[Zhang Airan] [1240034584]**: Project management, README documentation, environment setup, Part B (Miri UAF demo execution), and Extension (Data Race detection).
 - **[Bu Ziqian] [1240026374]**: Executed Part A (Section 4 unsafe statistics script) and data collection.
 - **[Wang Yuhan] [1240027124]**: Literature review, visual design, and presentation slide preparation.
 - **[Zhu Linye] [1240022621]**: Critical analysis of limitations and final report writing.
@@ -91,3 +93,17 @@ To adapt the 2020 PLDI paper's artifact to modern environments, we made the foll
 ## 7. Licenses and Acknowledgments
 This project reuses the code and dataset from the original authors. The original code is licensed under the MIT License and Apache License 2.0 (see `LICENSE-MIT` and `LICENSE-APACHE` in this repository). 
 We acknowledge the authors of the PLDI 2020 paper for providing the dataset and the original bug detectors.
+
+## 8. Extension Experiment (Beyond the Paper)
+To extend the original paper's work, we explored whether dynamic detection tools could catch **concurrency bugs** (which cause severe system crashes). We created a multi-threaded Rust program (`bugs/race_demo/`) that intentionally performs non-atomic reads and writes via raw pointers.
+
+To run the extension experiment:
+```bash
+cd bugs/race_demo
+cargo +nightly-2026-11-19 miri run
+```
+**Expected Output:**
+Miri successfully detected the Data Race and aborted with the following error:
+`error: Undefined Behavior: Data race detected between (1) non-atomic read on thread 'unnamed-1' and (2) non-atomic write on thread 'unnamed-2'`
+
+*(Screenshot available at `bugs/race_demo/race_output.png`)*
