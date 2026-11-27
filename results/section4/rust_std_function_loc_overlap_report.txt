@@ -1,0 +1,48 @@
+======================================================================
+SECTION 4 FUNCTION LOC OVERLAP AUDIT
+======================================================================
+
+files: 326
+functions: 577
+raw_loc: 4408
+unique_loc: 4382
+duplicate_loc: 26
+overlap_files: 4
+overlap_pairs: 5
+invalid: 0
+
+OVERLAPPING FILE DETAILS
+======================================================================
+
+FILE: sys/redox/fast_thread_local.rs
+Functions: 4
+Raw LOC: 76
+Unique LOC: 66
+Duplicate LOC: 10
+Overlap: Function 2 and Function 3: 71-80 (10 LOC)
+
+FILE: sys/unix/fast_thread_local.rs
+Functions: 3
+Raw LOC: 69
+Unique LOC: 59
+Duplicate LOC: 10
+Overlap: Function 2 and Function 3: 74-83 (10 LOC)
+
+FILE: sys/wasm/mod.rs
+Functions: 4
+Raw LOC: 24
+Unique LOC: 23
+Duplicate LOC: 1
+Overlap: Function 3 and Function 4: 317-317 (1 LOC)
+
+FILE: sys/windows/thread_local.rs
+Functions: 9
+Raw LOC: 78
+Unique LOC: 73
+Duplicate LOC: 5
+Overlap: Function 6 and Function 7: 212-215 (4 LOC)
+Overlap: Function 6 and Function 8: 217-217 (1 LOC)
+
+======================================================================
+AUDIT COMPLETE
+======================================================================
