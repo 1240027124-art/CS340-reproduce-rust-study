@@ -1,16 +1,30 @@
-<<<<<<< HEAD
+# Original project ignore rules
 *.info
-tmp/
-__pycache__/
-*.log
 .DS_Store
-=======
-# Ignore dataset and build outputs
-dataset/
 *.log
+
+# Python temporary files
 __pycache__/
+
+# Build outputs
 target/
-*.csv
+
+# Datasets and historical source repositories
+dataset/
+projects/rust-2019-study/
+
+# Temporary files
+/tmp
+*.bak
+*.before_*
+
+# Generated Linux executable
+/comment_remover/comment_remover_linux
+
+# Archives
 *.zip
 *.tar.gz
->>>>>>> origin/main
+
+# CSV files are ignored by default.
+# Important experiment CSV files can be force-added with git add -f.
+*.csv

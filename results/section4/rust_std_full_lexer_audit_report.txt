@@ -1,0 +1,53 @@
+SECTION 4 - FULL LIBSTD UNSAFE FUNCTION AUDIT
+
+Experiment:
+Complete unsafe function audit across all libstd directories.
+
+Dataset:
+Historical Rust source.
+
+Historical commit:
+2975a3c4befa8ad610da2e3c5f5de351d6d70a2b
+
+Source directory:
+projects/rust-2019-study/rust/src/libstd
+
+Tool:
+unsafe_fn_extractor_lexer.py
+
+Comment remover:
+comment_remover_linux
+
+Scope:
+All 11 immediate libstd subdirectories.
+All 355 Rust source files.
+
+FINAL RESULTS:
+Unsafe functions: 615
+Raw function LOC: 4660
+Unique function LOC: 4624
+Duplicate LOC: 36
+Files containing overlapping function intervals: 5
+Overlapping function pairs: 6
+Invalid function intervals: 0
+
+LOC methodology:
+Function intervals are merged separately within each Rust source file.
+Intervals from different source files are never merged.
+Raw LOC is the sum of all detected function interval lengths.
+Unique LOC is the sum of merged interval lengths within each file.
+Duplicate LOC is Raw LOC minus Unique LOC.
+
+Validation:
+Historical dataset commit verified.
+All 11 libstd directories processed.
+All 355 Rust source files processed.
+No invalid function intervals detected.
+
+Important limitation:
+These are results from the current Lexer audit.
+They must not be treated as identical to the original paper's
+statistics until the counting methodology and scope are compared.
+
+Status:
+Full libstd audit completed.

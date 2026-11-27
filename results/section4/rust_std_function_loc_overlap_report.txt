@@ -4,8 +4,8 @@ SECTION 4 FUNCTION LOC OVERLAP AUDIT
 
 files: 326
 functions: 577
-raw_loc: 4408
-unique_loc: 4382
+raw_loc: 4442
+unique_loc: 4416
 duplicate_loc: 26
 overlap_files: 4
 overlap_pairs: 5

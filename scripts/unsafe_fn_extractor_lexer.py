@@ -423,6 +423,14 @@ def extract_unsafe_fn(lines):
                                     )
                                     continue
 
+                                # Skip character and byte-character
+                                # literals before checking braces.
+                                char_end = _skip_char_literal(text, k)
+
+                                if char_end is not None:
+                                    k = char_end
+                                    continue
+
                                 if text[k] == "{":
                                     depth += 1
                                 elif text[k] == "}":
